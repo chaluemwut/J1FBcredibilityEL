@@ -1,9 +1,3 @@
-var base_url = "https://www.fbcredibility.com/sdc/";
-// var base_url = "https://www.sdc.com/sdc/";
-var server_url = base_url+"fbevaluator2";
-// var feedback_url = base_url+"fbfeedback";
-// var server_url = "https://lab.socialdatacomputing.com/sdc/";
-
 function createSourceButton(ref){
 	ret = '<button id=pro_but_'+ref;
 	ret += ' class="inline" style="position: relative; margin-left: 10px;height:19px;">';
@@ -22,15 +16,10 @@ function createAssessmentButton(divId){
 	return ret
 }
 function createFeatureDiv(divId, feature){
-	ret ='<div>';
-	ret += templateFeatureDiv('likes_'+divId, feature['likes']);
-	ret += templateFeatureDiv('comments_'+divId, feature['comments']);
-	ret += templateFeatureDiv('shares_'+divId, feature['shares']);
-	ret += templateFeatureDiv('url_'+divId, feature['url']);
-	ret += templateFeatureDiv('hashtag_'+divId, feature['hash_tag']);
-	ret += templateFeatureDiv('images_'+divId, feature['images']);
-	ret += templateFeatureDiv('vdo_'+divId, feature['vdo']);
-	ret += templateFeatureDiv('is_location_'+divId, feature['is_location']);
+	ret = '<div>';
+	for(var key in feature){
+		ret += templateFeatureDiv(key+'_'+divId, feature[key]);
+	}
 	ret += '</div>';
 	return ret;
 }
@@ -254,6 +243,24 @@ function get_user_name(){
 	return user_name.text();
 }
 
+function get_below_title(clearfix){
+	var below_content = $(clearfix).find("div[class='_5pcp']");
+	return below_content;
+}
+
+function is_public(clearfix){
+	var below_content = get_below_title(clearfix);
+	var counter = 0;
+	$(below_content).find('a','div').each(function(i){
+		var attr_obj = $(this).attr('aria-label');
+		console.log(attr_obj);
+		if (attr_obj == 'Public' || attr_obj == 'Shared with: Public'){
+			counter+=1;
+		}
+	});
+	console.log('counter '+counter);
+	return counter;
+}
 
 $(document).ready(function () {
 	console.log('start');
@@ -300,6 +307,8 @@ $(document).ready(function () {
 			feature['images'] = img_count;
 			feature['vdo'] = vdo_count;
 			feature['is_location'] = get_location_number(sub_stream);
+			feature['message'] = user_content.text();
+			feature['is_public'] = is_public(clearfix);
 			var out_data = 't:'+common[4]+' l:'+common[0]+
 			               ' c:'+common[1]+' s:'+common[2]+
 			               ' url:'+url_count+' has:'+hash_tag+' img:'+img_count+
@@ -314,14 +323,8 @@ $(document).ready(function () {
 				}
 				var post_id = getObjId(link_id.attr('href'));
 				clearfix.append(createFBCredibilityDiv(i, out_data, feature));
-				var urlCall = server_url+"?likes="+common[0]+"&comments="+common[1]+
-							  "&shares="+common[2]+"&url="+url_count+
-							  "&hashtag="+hash_tag+"&images="+img_count+
-							  "&vdo="+vdo_count+
-							  "&return_id="+i;
 				$("#sub_"+i).click(function(){
 					var obj = $(this);
-					// console.log('counter '+obj.attr('id'));
 					var obj_id = obj.attr('id').replace("sub_","");
 					var data = $("#radio"+obj_id+":checked");
 					var likes = $("#likes_"+obj_id).val();
@@ -332,20 +335,15 @@ $(document).ready(function () {
 					var images = $("#images_"+obj_id).val();
 					var vdo = $("#vdo_"+obj_id).val();
 					var location = $("#is_location_"+obj_id).val();
+					var message = $("#message_"+obj_id).val();
+					var is_public = $('#is_public_'+obj_id).val();
 
-					var urlCall = server_url+"?rating="+data.val()+"&return_id="+obj_id+
-								"&likes="+likes+
-								"&shares="+shares+
-								"&comments="+comments+
-								"&url="+url+
-								"&hashtag="+hashtag+
-								"&images="+images+
-								"&vdo="+vdo+
-								"&location="+location+
-								"&user_name=";
 
 					console.log('start send');
-					var request = {action: 'fetch_credibility', return_id:obj_id, likes:likes};
+					FBPostObj = {return_id:obj_id, likes: likes, shares: shares, 
+						comments: comments, url: url, hashtag: hashtag, images: images,
+						vdo: vdo, location: location, message: message, is_public: is_public};
+					var request = {action: 'fetch_credibility', fbpost: FBPostObj};
 					chrome.runtime.sendMessage(request, function(response) {
 						console.log('recive message');
 						console.log(response.ret_id);

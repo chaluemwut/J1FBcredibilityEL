@@ -15,14 +15,18 @@ function initOnStartup() {
 
 function callAPI(request, sender, sendResponse) {
 	if (request.action == 'fetch_credibility') {
-		// console.log(request.para);
+		// console.log('before');
+		// console.log(request.fbpost);
 		var xhr = new XMLHttpRequest();
-		// xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-		var url = apiRoot+'j1fbfilterel?return_id='+request.return_id+"&likes="+request.likes;
+		var url = apiRoot+'j1fbfilterel?return_id='+request.fbpost.return_id+"&likes="+request.fbpost.likes+
+		'&comments='+request.fbpost.comments+'&url='+request.fbpost.url+'&hashtag'+request.fbpost.hashtag+
+		'&images='+request.fbpost.images+'&vdo='+request.fbpost.vdo+'&location'+request.fbpost.location
+		+'&is_public='+request.fbpost.is_public
+		+'&message='+request.fbpost.message;
 		xhr.open("POST", url, false);
+		xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
 		xhr.onreadystatechange = function() {
 			var response = {ret_id:'', description:'', status:''};
-			console.log('r1');
 			console.log(xhr.responseText);
 			var fbres = JSON.parse(xhr.responseText);
 			response.ret_id = fbres.return_id;

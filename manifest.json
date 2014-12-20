@@ -3,8 +3,8 @@
 	"name": "J1FBCredibilityEL",
 	"version": "1.0",
 	"author": "Chaluemwut Noyunsan",
-	"description": "FB credibility Evaluator.",
-	"homepage_url": "https://www.fbcredibility.com",
+	"description": "J1 FB credibility Evaluator.",
+	"homepage_url": "http://www.fbcredibility.com",
 
 	"icons": {
 		"16": "img/icon16.png",
