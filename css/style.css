@@ -1,0 +1,63 @@
+.tweetcred-credibility {
+	color: #55acee;
+}
+
+.tweetcred-credibility > .icon-muted {
+	color: #d8d1d1;
+}
+
+.tweetcred-credibility.u-pullLeft {
+	padding-left: 4px;
+}
+
+.tweetcred-logo {
+	padding: 5px;
+	position: fixed;
+	right: 10px;
+	bottom: 15px;
+	display: none;
+	z-index: 100000;
+}
+
+.tweetcred-logo > span {
+	color: #8899a6;
+	font-size: 13px;
+	font-style: italic;
+}
+
+.tweetcred-logo > img {
+	width: 278px;
+	padding-top: 3px;
+}
+
+.popover-content > i {
+	margin-left: 12px;
+}
+
+.popover-content > div {
+	font-size: small;
+}
+
+.popover-content > .icon-thumbs-up:hover {
+	color: #0F0;
+}
+
+.popover-content > .icon-thumbs-down:hover {
+	color: #F00;
+}
+
+.tweetcred-credibility-feedback {
+	unicode-bidi: bidi-override;
+	direction: rtl;
+	display: inline-block;
+}
+
+.tweetcred-credibility-feedback > i {
+	color: #d8d1d1;
+	font-size: x-large;
+}
+
+.tweetcred-credibility-feedback > i:hover:before,
+.tweetcred-credibility-feedback > i:hover ~ i:before {
+	color: #55acee;
+}

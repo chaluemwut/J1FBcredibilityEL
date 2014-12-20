@@ -1,0 +1,89 @@
+.inline {
+	float: left;
+}
+
+.right_div {
+	float: right;
+}
+
+.clearBoth {
+	clear: both;
+}
+
+.ui-progressbar-value {
+	color: blue;
+    font-size: 13px;
+    font-weight: normal;
+    line-height: 18px;
+    padding-left: 10px;
+}
+
+.rating1 {
+	float: left;
+	width: 200px;
+	z-index:9999;
+	background:	transparent url('chrome-extension://dfopcdnnidoelfmfegiicampjhejkgif/jquery/images/scal1.png') no-repeat;
+}
+
+.rating2 {
+	float: left;
+	width: 200px;
+	z-index:9999;
+	background:	transparent url('chrome-extension://dfopcdnnidoelfmfegiicampjhejkgif/jquery/images/scal2.png') no-repeat;
+}
+
+.rating3 {
+	float: left;
+	width: 200px;
+	z-index:9999;
+	background:	transparent url('chrome-extension://dfopcdnnidoelfmfegiicampjhejkgif/jquery/images/scal3.png') no-repeat;
+}
+
+.rating4 {
+	float: left;
+	width: 200px;
+	z-index:9999;
+	background:	transparent url('chrome-extension://dfopcdnnidoelfmfegiicampjhejkgif/jquery/images/scal4.png') no-repeat;
+}
+
+.rating5 {
+	float: left;
+	width: 200px;
+	z-index:9999;
+	background:	transparent url('chrome-extension://dfopcdnnidoelfmfegiicampjhejkgif/jquery/images/scal5.png') no-repeat;
+}
+
+.rating6 {
+	float: left;
+	width: 200px;
+	z-index:9999;
+	background:	transparent url('chrome-extension://dfopcdnnidoelfmfegiicampjhejkgif/jquery/images/scal6.png') no-repeat;
+}
+
+.rating7 {
+	float: left;
+	width: 200px;
+	z-index:9999;
+	background:	transparent url('chrome-extension://dfopcdnnidoelfmfegiicampjhejkgif/jquery/images/scal7.png') no-repeat;
+}
+
+.rating8 {
+	float: left;
+	width: 200px;
+	z-index:9999;
+	background:	transparent url('chrome-extension://dfopcdnnidoelfmfegiicampjhejkgif/jquery/images/scal8.png') no-repeat;
+}
+
+.rating9 {
+	float: left;
+	width: 200px;
+	z-index:9999;
+	background:	transparent url('chrome-extension://dfopcdnnidoelfmfegiicampjhejkgif/jquery/images/scal9.png') no-repeat;
+}
+
+.rating10 {
+	float: left;
+	width: 200px;
+	z-index:9999;
+	background:	transparent url('chrome-extension://dfopcdnnidoelfmfegiicampjhejkgif/jquery/images/scal10.png') no-repeat;
+}

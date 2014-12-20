@@ -1,0 +1,64 @@
+{
+	"manifest_version": 2,
+	"name": "J1FBCredibilityEL",
+	"version": "1.0",
+	"author": "Chaluemwut Noyunsan",
+	"description": "FB credibility Evaluator.",
+	"homepage_url": "https://www.fbcredibility.com",
+
+	"icons": {
+		"16": "img/icon16.png",
+		"48": "img/icon48.png",
+		"128": "img/icon128.png"
+	},
+
+	"permissions": [
+		"storage",
+		"https://www.facebook.com/*",
+		"https://www.fbcredibility.com:8080/*",
+		"http://127.0.0.1:9090/*"
+	],
+
+	"content_scripts": [
+		{
+			"matches": [
+				"https://www.facebook.com/*",
+				"https://www.fbcredibility.com:8080/*",
+				"http://127.0.0.1:9090/*"
+			],
+			"css": [
+				"css/fbcredibility.css",
+				"css/bootstrap.css",
+				"css/style.css"
+			],
+			"js": [
+				"js/jquery-1.10.2.min.js",
+				"js/bootstrap.min.js",
+				"js/fbcredibility.js"
+			],
+			"run_at": "document_end",
+			"all_frames": false
+		}
+	],
+
+	"background": {
+		"scripts": [
+			"js/background.js"
+		],
+		"persistent": false
+	},
+
+	"page_action": {
+		"default_icon": {
+			"19": "img/icon19.png",
+			"38": "img/icon38.png"
+		},
+		"default_title": "Click to give feedback about TweetCred."
+	},
+
+	"web_accessible_resources": [
+		"img/*",
+		"font/*",
+		"js/jquery-1.10.2.min.map"
+	]
+}
