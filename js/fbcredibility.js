@@ -251,15 +251,48 @@ function get_below_title(clearfix){
 function is_public(clearfix){
 	var below_content = get_below_title(clearfix);
 	var counter = 0;
-	$(below_content).find('a','div').each(function(i){
+	// console.log(clearfix.text());
+	$(below_content).find('a').each(function(i){
 		var attr_obj = $(this).attr('aria-label');
-		console.log(attr_obj);
+		// console.log(attr_obj);
 		if (attr_obj == 'Public' || attr_obj == 'Shared with: Public'){
 			counter+=1;
 		}
 	});
-	console.log('counter '+counter);
+
+	$(below_content).find('div').each(function(i){
+		var attr_obj = $(this).attr('aria-label');
+		// console.log(attr_obj);
+		if (attr_obj == 'Public' || attr_obj == 'Shared with: Public'){
+			counter+=1;
+		}
+	});
+	// console.log('counter '+counter);
 	return counter;
+}
+
+function app_sender(clearfix){
+	var below_content = get_below_title(clearfix);
+	var app_div = $(below_content).find("[class='_5pcq _20y0']");
+	if(app_div.length){
+		return app_div.text(); 
+	} else {
+		return 'NotFound';
+	}
+}
+
+function feeling_status(clearfix){
+	var below_content = get_below_title(clearfix);
+	var feeling_div = $(below_content).find("[class='_51mq img']");
+	// console.log(feeling_div);
+	return feeling_div.length;
+}
+
+function fb_location(clearfix){
+	var below_content = get_below_title(clearfix);
+	var feeling_div = $(below_content).find("a[class='profileLink']");
+	// console.log(feeling_div);
+	return feeling_div.length;
 }
 
 $(document).ready(function () {
@@ -306,14 +339,19 @@ $(document).ready(function () {
 			feature['hash_tag'] = hash_tag;
 			feature['images'] = img_count;
 			feature['vdo'] = vdo_count;
-			feature['is_location'] = get_location_number(sub_stream);
+			// feature['is_location'] = get_location_number(sub_stream);
+			feature['is_location'] = fb_location(clearfix);
 			feature['message'] = user_content.text();
-			feature['is_public'] = is_public(clearfix);
-			var out_data = 't:'+common[4]+' l:'+common[0]+
-			               ' c:'+common[1]+' s:'+common[2]+
-			               ' url:'+url_count+' has:'+hash_tag+' img:'+img_count+
-			               ' vdo:'+vdo_count;
-
+			var share_public = is_public(clearfix);
+			feature['is_public'] = share_public;
+			var share_only_friend_count = 0;
+			if (share_public == 0){
+				share_only_friend_count = 1;
+			}
+			feature['share_only_friend'] = share_only_friend_count;
+			feature['app_sender'] = app_sender(clearfix);
+			feature['feeling_status'] = feeling_status(clearfix);
+			var out_data = '';
 			if($(clearfix).find("[id^='kku_']").length){
 				// console.log('found');
 			} else {
@@ -337,12 +375,17 @@ $(document).ready(function () {
 					var location = $("#is_location_"+obj_id).val();
 					var message = $("#message_"+obj_id).val();
 					var is_public = $('#is_public_'+obj_id).val();
+					var share_only_friend = $('#share_only_friend_'+obj_id).val();
+					var app_sender = $('#app_sender_'+obj_id).val();
+					var feeling_status = $('#feeling_status_'+obj_id).val();
 
 
 					console.log('start send');
 					FBPostObj = {return_id:obj_id, likes: likes, shares: shares, 
 						comments: comments, url: url, hashtag: hashtag, images: images,
-						vdo: vdo, location: location, message: message, is_public: is_public};
+						vdo: vdo, location: location, message: message, is_public: is_public,
+					    share_only_friend: share_only_friend, app_sender: app_sender,
+						feeling_status: feeling_status};
 					var request = {action: 'fetch_credibility', fbpost: FBPostObj};
 					chrome.runtime.sendMessage(request, function(response) {
 						console.log('recive message');
