@@ -282,17 +282,39 @@ function app_sender(clearfix){
 }
 
 function feeling_status(clearfix){
-	var below_content = get_below_title(clearfix);
-	var feeling_div = $(below_content).find("[class='_51mq img']");
-	// console.log(feeling_div);
+	var feeling_div = $(clearfix).find("img[class='_51mq img']");
 	return feeling_div.length;
 }
 
 function fb_location(clearfix){
-	var below_content = get_below_title(clearfix);
-	var feeling_div = $(below_content).find("a[class='profileLink']");
-	// console.log(feeling_div);
-	return feeling_div.length;
+	var ret = 0;
+	$(clearfix).find("a[class='profileLink']").each(function(){
+		var link_obj = $(this).attr('href');
+		var i_href = link_obj.indexOf('https://www.facebook.com/pages');
+		if(i_href == 0){
+			ret = 1;
+		}
+	});
+	return ret;
+}
+
+function tag_with(clearfix){
+	var ret = 0;
+	$(clearfix).find("a[class='profileLink']").each(function(){
+		var link_obj = $(this).attr('data-hovercard');
+		if (link_obj != undefined) {
+			var user_link = link_obj.indexOf('/ajax/hovercard/user.php');
+			if (user_link == 0){
+				ret = 1;
+			}			
+		}
+	});
+	var other_div = $(clearfix).find("div[class='fwn fcg'] > span[class='fcg'] > a[ajaxify]");
+	if(other_div.length){
+		var div_data = other_div.text().replace(' others','');
+		ret += parseInt(div_data);
+	}
+	return ret;
 }
 
 $(document).ready(function () {
@@ -339,8 +361,13 @@ $(document).ready(function () {
 			feature['hash_tag'] = hash_tag;
 			feature['images'] = img_count;
 			feature['vdo'] = vdo_count;
-			// feature['is_location'] = get_location_number(sub_stream);
-			feature['is_location'] = fb_location(clearfix);
+			var share_location = fb_location(clearfix);
+			feature['is_location'] = share_location
+			var share_with_non_location = 0;
+			if (share_location == 0){
+				share_with_non_location = 1;
+			}
+			feature['non_location'] = share_with_non_location;
 			feature['message'] = user_content.text();
 			var share_public = is_public(clearfix);
 			feature['is_public'] = share_public;
@@ -351,6 +378,7 @@ $(document).ready(function () {
 			feature['share_only_friend'] = share_only_friend_count;
 			feature['app_sender'] = app_sender(clearfix);
 			feature['feeling_status'] = feeling_status(clearfix);
+			feature['tag_with'] = tag_with(clearfix);
 			var out_data = '';
 			if($(clearfix).find("[id^='kku_']").length){
 				// console.log('found');
@@ -373,18 +401,21 @@ $(document).ready(function () {
 					var images = $("#images_"+obj_id).val();
 					var vdo = $("#vdo_"+obj_id).val();
 					var location = $("#is_location_"+obj_id).val();
+					var non_location = $("#non_location_"+obj_id).val();
 					var message = $("#message_"+obj_id).val();
 					var is_public = $('#is_public_'+obj_id).val();
 					var share_only_friend = $('#share_only_friend_'+obj_id).val();
 					var app_sender = $('#app_sender_'+obj_id).val();
 					var feeling_status = $('#feeling_status_'+obj_id).val();
+					var tag_with = $('#tag_with_'+obj_id).val();
 
 
 					console.log('start send');
 					FBPostObj = {return_id:obj_id, likes: likes, shares: shares, 
 						comments: comments, url: url, hashtag: hashtag, images: images,
-						vdo: vdo, location: location, message: message, is_public: is_public,
-					    share_only_friend: share_only_friend, app_sender: app_sender,
+						vdo: vdo, location: location, non_location: non_location,
+						message: message, is_public: is_public,
+					    share_only_friend: share_only_friend, app_sender: app_sender, tag_with: tag_with,
 						feeling_status: feeling_status};
 					var request = {action: 'fetch_credibility', fbpost: FBPostObj};
 					chrome.runtime.sendMessage(request, function(response) {

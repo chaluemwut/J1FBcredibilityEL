@@ -21,10 +21,12 @@ function callAPI(request, sender, sendResponse) {
 		var url = apiRoot+'j1fbfilterel?return_id='+request.fbpost.return_id+"&likes="+request.fbpost.likes+
 		'&comments='+request.fbpost.comments+'&url='+request.fbpost.url+'&hashtag='+request.fbpost.hashtag+
 		'&images='+request.fbpost.images+'&vdo='+request.fbpost.vdo+'&location='+request.fbpost.location
+		+'&non_location='+request.fbpost.non_location
 		+'&is_public='+request.fbpost.is_public
 		+'&share_only_friend='+request.fbpost.share_only_friend
 		+'&app_sender='+request.fbpost.app_sender
 		+'&feeling_status='+request.fbpost.feeling_status
+		+'&tag_with='+request.fbpost.tag_with
 		+'&message='+request.fbpost.message;
 		console.log('location : '+request.fbpost.location);
 		xhr.open("POST", url, false);
