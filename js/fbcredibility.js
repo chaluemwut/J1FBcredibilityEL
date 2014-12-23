@@ -317,6 +317,52 @@ function tag_with(clearfix){
 	return ret;
 }
 
+function template_sender(obj, name, cred_value){
+	var obj_id = obj.attr('id').replace(name,"");
+	var data = $("#radio"+obj_id+":checked");
+	var likes = $("#likes_"+obj_id).val();
+	var shares = $("#shares_"+obj_id).val();
+	var comments = $("#comments_"+obj_id).val();
+	var url = $("#url_"+obj_id).val();
+	var hashtag = $("#hashtag_"+obj_id).val();
+	var images = $("#images_"+obj_id).val();
+	var vdo = $("#vdo_"+obj_id).val();
+	var location = $("#is_location_"+obj_id).val();
+	var non_location = $("#non_location_"+obj_id).val();
+	var message = $("#message_"+obj_id).val();
+	var is_public = $('#is_public_'+obj_id).val();
+	var share_only_friend = $('#share_only_friend_'+obj_id).val();
+	var app_sender = $('#app_sender_'+obj_id).val();
+	var feeling_status = $('#feeling_status_'+obj_id).val();
+	var tag_with = $('#tag_with_'+obj_id).val();
+
+	FBPostObj = {return_id:obj_id, likes: likes, shares: shares, 
+				comments: comments, url: url, hashtag: hashtag, images: images,
+				vdo: vdo, location: location, non_location: non_location,
+				message: message, is_public: is_public,
+			    share_only_friend: share_only_friend, app_sender: app_sender, tag_with: tag_with,
+				feeling_status: feeling_status, cred_value: cred_value};
+	var request = {action: 'fetch_credibility', fbpost: FBPostObj};
+	chrome.runtime.sendMessage(request, function(response) {
+			console.log('recive message');
+			console.log(response.ret_id);
+			var ret_id = response.ret_id;
+			var description = response.description;
+			var status = response.status;
+			var data = '';
+			if (status == 0) {
+				data = '<span id=msg_'+ret_id+' style="color:green;">'+description+'</span>';
+			} else {
+				data = '<span id=msg_'+ret_id+' style="color:red;">'+description+'</span>';
+			}
+			$('#rating_container_'+ret_id).append(data);
+			$('#b_yes_'+ret_id).attr('disabled','disabled');
+			$('#b_no_'+ret_id).attr('disabled','disabled');
+			$('#sub_'+ret_id).attr('disabled','disabled');
+	});
+
+}
+
 $(document).ready(function () {
 	console.log('start');
 	var panel = $('<div class="panel panel-default tweetcred-logo"></div>');
@@ -389,50 +435,22 @@ $(document).ready(function () {
 				}
 				var post_id = getObjId(link_id.attr('href'));
 				clearfix.append(createFBCredibilityDiv(i, out_data, feature));
-				$("#sub_"+i).click(function(){
+
+				$("#b_yes_"+i).click(function(){
+					console.log('click yes');
 					var obj = $(this);
-					var obj_id = obj.attr('id').replace("sub_","");
-					var data = $("#radio"+obj_id+":checked");
-					var likes = $("#likes_"+obj_id).val();
-					var shares = $("#shares_"+obj_id).val();
-					var comments = $("#comments_"+obj_id).val();
-					var url = $("#url_"+obj_id).val();
-					var hashtag = $("#hashtag_"+obj_id).val();
-					var images = $("#images_"+obj_id).val();
-					var vdo = $("#vdo_"+obj_id).val();
-					var location = $("#is_location_"+obj_id).val();
-					var non_location = $("#non_location_"+obj_id).val();
-					var message = $("#message_"+obj_id).val();
-					var is_public = $('#is_public_'+obj_id).val();
-					var share_only_friend = $('#share_only_friend_'+obj_id).val();
-					var app_sender = $('#app_sender_'+obj_id).val();
-					var feeling_status = $('#feeling_status_'+obj_id).val();
-					var tag_with = $('#tag_with_'+obj_id).val();
+					template_sender(obj,'b_yes_', 'yes');
+				});
+				$("#b_no_"+i).click(function(){
+					console.log('click no');
+					var obj = $(this);
+					template_sender(obj,'b_no_', 'no');
+				});
 
-
-					console.log('start send');
-					FBPostObj = {return_id:obj_id, likes: likes, shares: shares, 
-						comments: comments, url: url, hashtag: hashtag, images: images,
-						vdo: vdo, location: location, non_location: non_location,
-						message: message, is_public: is_public,
-					    share_only_friend: share_only_friend, app_sender: app_sender, tag_with: tag_with,
-						feeling_status: feeling_status};
-					var request = {action: 'fetch_credibility', fbpost: FBPostObj};
-					chrome.runtime.sendMessage(request, function(response) {
-						console.log('recive message');
-						console.log(response.ret_id);
-						var ret_id = response.ret_id;
-						var description = response.description;
-						var status = response.status;
-						var data = '';
-						if (status == 0) {
-							data = '<span id=msg_'+ret_id+' style="color:green;">'+description+'</span>';
-						} else {
-							data = '<span id=msg_'+ret_id+' style="color:red;">'+description+'</span>';
-						}
-						$('#rating_container_'+ret_id).append(data);						
-					})
-					console.log('end send');
+				$("#sub_"+i).click(function(){
+					console.log('skip');
+					var obj = $(this);
+					template_sender(obj,'sub_', 'skip');
 				});				
 			}
 		});

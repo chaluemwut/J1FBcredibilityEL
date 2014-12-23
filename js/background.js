@@ -18,9 +18,15 @@ function callAPI(request, sender, sendResponse) {
 		// console.log('before');
 		// console.log(request.fbpost);
 		var xhr = new XMLHttpRequest();
-		var url = apiRoot+'j1fbfilterel?return_id='+request.fbpost.return_id+"&likes="+request.fbpost.likes+
-		'&comments='+request.fbpost.comments+'&url='+request.fbpost.url+'&hashtag='+request.fbpost.hashtag+
-		'&images='+request.fbpost.images+'&vdo='+request.fbpost.vdo+'&location='+request.fbpost.location
+		var url = apiRoot+'j1fbfilterel?return_id='+request.fbpost.return_id
+		+"&cred_value="+request.fbpost.cred_value
+		+"&likes="+request.fbpost.likes
+		+'&comments='+request.fbpost.comments
+		+'&url='+request.fbpost.url
+		+'&hashtag='+request.fbpost.hashtag
+		+'&images='+request.fbpost.images
+		+'&vdo='+request.fbpost.vdo
+		+'&location='+request.fbpost.location
 		+'&non_location='+request.fbpost.non_location
 		+'&is_public='+request.fbpost.is_public
 		+'&share_only_friend='+request.fbpost.share_only_friend
