@@ -367,7 +367,7 @@ $(document).ready(function () {
 	console.log('start');
 	var panel = $('<div class="panel panel-default tweetcred-logo"></div>');
 	var logo  = new Image();
-	panel.append("<span>FB credibility powered by</span><br/>");
+	// panel.append("<span>FB credibility powered by</span><br/>");
 	logo.src = chrome.extension.getURL("img/logo.png");
 
 	$(logo).load(function() {
