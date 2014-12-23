@@ -1,7 +1,7 @@
 {
 	"manifest_version": 2,
 	"name": "J1FBCredibilityEL",
-	"version": "1.0",
+	"version": "1.1.0",
 	"author": "Chaluemwut Noyunsan",
 	"description": "J1 FB credibility Evaluator.",
 	"homepage_url": "http://www.fbcredibility.com",
