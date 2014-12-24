@@ -300,13 +300,13 @@ function fb_location(clearfix){
 
 function tag_with(clearfix){
 	var ret = 0;
-	$(clearfix).find("a[class='profileLink']").each(function(){
+	$(clearfix).find("div[class='fwn fcg'] > a[class='profileLink']").each(function(){
 		var link_obj = $(this).attr('data-hovercard');
 		if (link_obj != undefined) {
 			var user_link = link_obj.indexOf('/ajax/hovercard/user.php');
 			if (user_link == 0){
-				ret = 1;
-			}			
+				ret += 1;
+			}	
 		}
 	});
 	var other_div = $(clearfix).find("div[class='fwn fcg'] > span[class='fcg'] > a[ajaxify]");
@@ -324,7 +324,7 @@ function template_sender(obj, name, cred_value){
 	var shares = $("#shares_"+obj_id).val();
 	var comments = $("#comments_"+obj_id).val();
 	var url = $("#url_"+obj_id).val();
-	var hashtag = $("#hashtag_"+obj_id).val();
+	var hashtag = $("#hash_tag_"+obj_id).val();
 	var images = $("#images_"+obj_id).val();
 	var vdo = $("#vdo_"+obj_id).val();
 	var location = $("#is_location_"+obj_id).val();

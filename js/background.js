@@ -19,8 +19,9 @@ function callAPI(request, sender, sendResponse) {
 		// console.log(request.fbpost);
 		var xhr = new XMLHttpRequest();
 		var url = apiRoot+'j1fbfilterel?return_id='+request.fbpost.return_id
-		+"&cred_value="+request.fbpost.cred_value
-		+"&likes="+request.fbpost.likes
+		+'&cred_value='+request.fbpost.cred_value
+		+'&likes='+request.fbpost.likes
+		+'&shares='+request.fbpost.shares
 		+'&comments='+request.fbpost.comments
 		+'&url='+request.fbpost.url
 		+'&hashtag='+request.fbpost.hashtag
