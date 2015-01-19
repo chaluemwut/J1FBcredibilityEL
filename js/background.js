@@ -34,6 +34,7 @@ function callAPI(request, sender, sendResponse) {
 		+'&app_sender='+request.fbpost.app_sender
 		+'&feeling_status='+request.fbpost.feeling_status
 		+'&tag_with='+request.fbpost.tag_with
+		+'&user_evaluator='+request.fbpost.user_evaluator
 		+'&message='+request.fbpost.message;
 		console.log('location : '+request.fbpost.location);
 		xhr.open("POST", url, false);

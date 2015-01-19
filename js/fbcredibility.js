@@ -18,22 +18,32 @@ function createAssessmentButton(divId){
 function createFeatureDiv(divId, feature){
 	ret = '<div>';
 	for(var key in feature){
-		ret += templateFeatureDiv(key+'_'+divId, feature[key]);
+		ret += templateFeatureDiv(key+'_'+divId, feature[key], 'hidden');
+		// if(key == 'message'){
+		// 	ret += templateFeatureDiv(key+'_'+divId, feature[key], 'text');
+		// } else {
+		// 	ret += templateFeatureDiv(key+'_'+divId, feature[key], 'hidden');
+		// }
 	}
 	ret += '</div>';
 	return ret;
 }
 
-function templateFeatureDiv(dataId, data){
-	return '<input type="hidden" id="'+dataId+'"value="'+data+'"/>';
+function templateFeatureDiv(dataId, data, type){
+	console.log(typeof(data));
+	if (typeof(data) == 'string'){
+		data = data.replace(/[&'"]/g, '');
+	}
+	return '<input type="'+type+'" id="'+dataId+'"value="'+data+'"/>';
 }
+
 
 function templateRating(counter){
 	// ret = '<div style=height:100%>';
 	ret = ' <div class="right_div" id=rating_container_'+counter+'>';
 	ret += ' <button id=b_yes_'+counter+'>Yes</button>';
 	ret += ' <button id=b_no_'+counter+'>No</button>';
-	ret += ' <button id=sub_'+counter+'>Skip</button>';
+	// ret += ' <button id=sub_'+counter+'>Skip</button>';
 	ret += ' </div>';
 	return ret;
 }
@@ -300,7 +310,8 @@ function fb_location(clearfix){
 
 function tag_with(clearfix){
 	var ret = 0;
-	$(clearfix).find("div[class='fwn fcg'] > a[class='profileLink']").each(function(){
+	//[span[class='fcg']]
+	$(clearfix).find("div[class='fwn fcg'] > span[class='fcg'] > a[class='profileLink']").each(function(){
 		var link_obj = $(this).attr('data-hovercard');
 		if (link_obj != undefined) {
 			var user_link = link_obj.indexOf('/ajax/hovercard/user.php');
@@ -334,6 +345,7 @@ function template_sender(obj, name, cred_value){
 	var share_only_friend = $('#share_only_friend_'+obj_id).val();
 	var app_sender = $('#app_sender_'+obj_id).val();
 	var feeling_status = $('#feeling_status_'+obj_id).val();
+	var user_evaluator = $('#user_evaluator_'+obj_id).val();
 	var tag_with = $('#tag_with_'+obj_id).val();
 
 	FBPostObj = {return_id:obj_id, likes: likes, shares: shares, 
@@ -341,7 +353,7 @@ function template_sender(obj, name, cred_value){
 				vdo: vdo, location: location, non_location: non_location,
 				message: message, is_public: is_public,
 			    share_only_friend: share_only_friend, app_sender: app_sender, tag_with: tag_with,
-				feeling_status: feeling_status, cred_value: cred_value};
+				feeling_status: feeling_status, cred_value: cred_value, user_evaluator: user_evaluator};
 	var request = {action: 'fetch_credibility', fbpost: FBPostObj};
 	chrome.runtime.sendMessage(request, function(response) {
 			console.log('recive message');
@@ -425,6 +437,7 @@ $(document).ready(function () {
 			feature['app_sender'] = app_sender(clearfix);
 			feature['feeling_status'] = feeling_status(clearfix);
 			feature['tag_with'] = tag_with(clearfix);
+			feature['user_evaluator'] = get_user_name();
 			var out_data = '';
 			if($(clearfix).find("[id^='kku_']").length){
 				// console.log('found');
